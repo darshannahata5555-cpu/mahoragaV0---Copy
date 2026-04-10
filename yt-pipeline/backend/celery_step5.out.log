@@ -1,10 +1,10 @@
  
  -------------- worker1@LAPTOP-2E5BC0GU v5.6.3 (recovery)
 --- ***** ----- 
--- ******* ---- Windows-11-10.0.26200-SP0 2026-04-11 01:07:06
+-- ******* ---- Windows-11-10.0.26200-SP0 2026-04-11 03:19:44
 - *** --- * --- 
 - ** ---------- [config]
-- ** ---------- .> app:         yt_pipeline:0x297118d1160
+- ** ---------- .> app:         yt_pipeline:0x200d6001160
 - ** ---------- .> transport:   redis://localhost:6379//
 - ** ---------- .> results:     redis://localhost:6379/
 - *** --- * --- .> concurrency: 16 (solo)

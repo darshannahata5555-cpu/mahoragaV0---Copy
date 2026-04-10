@@ -1,0 +1,12 @@
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+.env
+.env.*
+outputs/
+*.db
+*.log
+*.err.log
+*.out.log
+verify_step*.py

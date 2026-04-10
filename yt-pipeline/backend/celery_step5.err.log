@@ -1,9 +1,9 @@
-[2026-04-11 01:07:06,139: INFO/MainProcess] Connected to redis://localhost:6379//
-[2026-04-11 01:07:06,145: INFO/MainProcess] mingle: searching for neighbors
-[2026-04-11 01:07:07,181: INFO/MainProcess] mingle: all alone
-[2026-04-11 01:07:07,213: INFO/MainProcess] worker1@LAPTOP-2E5BC0GU ready.
-[2026-04-11 01:07:19,998: INFO/MainProcess] Task pipeline_worker.run_pipeline[100a1ca8-bc39-4a08-87a0-abb5d5c85452] received
-[2026-04-11 01:07:24,536: WARNING/MainProcess] C:\Users\darsh_z3dzcqu\OneDrive\Desktop\Scaler\mahoragaV0 - Copy\yt-pipeline\backend\app\services\gemini_analyzer.py:143: FutureWarning: 
+[2026-04-11 03:19:44,400: INFO/MainProcess] Connected to redis://localhost:6379//
+[2026-04-11 03:19:44,411: INFO/MainProcess] mingle: searching for neighbors
+[2026-04-11 03:19:45,462: INFO/MainProcess] mingle: all alone
+[2026-04-11 03:19:45,541: INFO/MainProcess] worker1@LAPTOP-2E5BC0GU ready.
+[2026-04-11 03:19:55,954: INFO/MainProcess] Task pipeline_worker.run_pipeline[42df02d1-be3e-4417-86f0-7f3a4c3dbcbb] received
+[2026-04-11 03:20:02,997: WARNING/MainProcess] C:\Users\darsh_z3dzcqu\OneDrive\Desktop\Scaler\mahoragaV0 - Copy\yt-pipeline\backend\app\services\gemini_analyzer.py:143: FutureWarning: 
 
 All support for the `google.generativeai` package has ended. It will no longer be receiving 
 updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
@@ -13,16 +13,20 @@ https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/READM
 
   import google.generativeai as genai
 
-[2026-04-11 01:07:25,305: INFO/MainProcess] Task pipeline_worker.run_pipeline[100a1ca8-bc39-4a08-87a0-abb5d5c85452] succeeded in 5.306812099996023s: None
-[2026-04-11 01:07:26,082: INFO/MainProcess] Task pipeline_worker.run_pipeline[88d013f3-4b43-4d94-b59a-0238d3a33532] received
-[2026-04-11 01:07:28,676: INFO/MainProcess] Task pipeline_worker.run_pipeline[88d013f3-4b43-4d94-b59a-0238d3a33532] succeeded in 2.5936801999923773s: None
-[2026-04-11 01:16:30,164: INFO/MainProcess] Task pipeline_worker.run_pipeline[873e3aad-2a29-4af8-bcf2-0a7828204f43] received
-[2026-04-11 01:16:33,963: INFO/MainProcess] Task pipeline_worker.run_pipeline[873e3aad-2a29-4af8-bcf2-0a7828204f43] succeeded in 3.798106900008861s: None
-[2026-04-11 01:20:22,155: INFO/MainProcess] Task pipeline_worker.run_pipeline[b424136d-469b-4abe-8eab-b41b025aa383] received
-[2026-04-11 01:20:25,201: INFO/MainProcess] Task pipeline_worker.run_pipeline[b424136d-469b-4abe-8eab-b41b025aa383] succeeded in 3.0456531000090763s: None
-[2026-04-11 01:34:37,901: INFO/MainProcess] Task pipeline_worker.run_pipeline[c7213e26-9d49-48f7-a8ce-786cc57df165] received
-[2026-04-11 01:34:40,869: INFO/MainProcess] Task pipeline_worker.run_pipeline[c7213e26-9d49-48f7-a8ce-786cc57df165] succeeded in 2.966523999988567s: None
-[2026-04-11 01:34:41,033: INFO/MainProcess] Task pipeline_worker.run_pipeline[acd0c25e-167b-4ff5-9cad-7160b89dcd27] received
-[2026-04-11 01:34:43,528: INFO/MainProcess] Task pipeline_worker.run_pipeline[acd0c25e-167b-4ff5-9cad-7160b89dcd27] succeeded in 2.4952401999908034s: None
-[2026-04-11 01:34:58,978: INFO/MainProcess] Task pipeline_worker.run_pipeline[c0d4e765-6a57-422b-8226-63ac0e3d2b04] received
-[2026-04-11 01:35:01,818: INFO/MainProcess] Task pipeline_worker.run_pipeline[c0d4e765-6a57-422b-8226-63ac0e3d2b04] succeeded in 2.8402103999978863s: None
+[2026-04-11 03:20:26,879: WARNING/MainProcess] [pipeline] Job a00d62d3-bf6f-4ca5-827f-cc9f6ee90a31 complete.
+[2026-04-11 03:20:26,901: INFO/MainProcess] Task pipeline_worker.run_pipeline[42df02d1-be3e-4417-86f0-7f3a4c3dbcbb] succeeded in 30.94666510002571s: None
+[2026-04-11 03:20:29,168: INFO/MainProcess] Task pipeline_worker.run_pipeline[e4f5b954-6a4c-4092-8862-3b282349739e] received
+[2026-04-11 03:20:52,166: WARNING/MainProcess] [pipeline] Job 789c0be5-d6bc-4e5e-a0a4-7e457e2c843f complete.
+[2026-04-11 03:20:52,170: INFO/MainProcess] Task pipeline_worker.run_pipeline[e4f5b954-6a4c-4092-8862-3b282349739e] succeeded in 23.001805300009437s: None
+[2026-04-11 03:20:52,174: INFO/MainProcess] Task pipeline_worker.run_pipeline[510042c9-f554-45f8-a2b3-18eb13dabebf] received
+[2026-04-11 03:21:36,060: WARNING/MainProcess] [pipeline] Job af8b346f-b228-47b3-b631-23de9c088ec5 complete.
+[2026-04-11 03:21:36,064: INFO/MainProcess] Task pipeline_worker.run_pipeline[510042c9-f554-45f8-a2b3-18eb13dabebf] succeeded in 43.88984150000033s: None
+[2026-04-11 03:21:37,726: INFO/MainProcess] Task pipeline_worker.run_pipeline[4b914acd-c391-46ff-be00-da467114cc29] received
+[2026-04-11 03:22:05,171: WARNING/MainProcess] [pipeline] Job 49d2191d-0cf0-4a02-884e-3eb1ed68034f complete.
+[2026-04-11 03:22:05,175: INFO/MainProcess] Task pipeline_worker.run_pipeline[4b914acd-c391-46ff-be00-da467114cc29] succeeded in 27.448170000017853s: None
+[2026-04-11 03:27:00,658: INFO/MainProcess] Task pipeline_worker.run_pipeline[fc8ad942-8454-4370-a1aa-e9ae5ff39a31] received
+[2026-04-11 03:27:21,746: WARNING/MainProcess] [pipeline] Job a06c4d06-cf9d-4c92-82cd-ff116725917c complete.
+[2026-04-11 03:27:21,750: INFO/MainProcess] Task pipeline_worker.run_pipeline[fc8ad942-8454-4370-a1aa-e9ae5ff39a31] succeeded in 21.091135199996643s: None
+[2026-04-11 03:30:43,109: INFO/MainProcess] Task pipeline_worker.run_pipeline[d69d95ee-5999-4786-807d-bf4c5ec14ecc] received
+[2026-04-11 03:31:12,281: WARNING/MainProcess] [pipeline] Job 013dc0ed-15b0-45be-8e07-376003f300fc complete.
+[2026-04-11 03:31:12,286: INFO/MainProcess] Task pipeline_worker.run_pipeline[d69d95ee-5999-4786-807d-bf4c5ec14ecc] succeeded in 29.176080900011584s: None

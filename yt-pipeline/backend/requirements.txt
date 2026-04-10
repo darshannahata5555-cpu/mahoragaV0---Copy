@@ -7,7 +7,9 @@ celery[redis]
 redis
 python-dotenv
 google-generativeai
+google-genai
 pydantic
 pydantic-settings
 httpx
 python-multipart
+yt-dlp

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+.env
+*.db
+
+# Outputs / logs
+yt-pipeline/backend/outputs/
+yt-pipeline/backend/*.log
+yt-pipeline/backend/*.err.log
+yt-pipeline/backend/*.out.log
+
+# Node
+node_modules/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
