@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python verify_step0.py)",
+      "Bash(docker-compose up:*)",
+      "Bash(pip install:*)",
+      "Bash(uvicorn app.main:app --port 8000)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
