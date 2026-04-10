@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import jobs
+from app.api.jobs import router as jobs_router
 
 app = FastAPI(
     title="YouTube Content Intelligence Pipeline",
@@ -19,7 +19,7 @@ app.add_middleware(
 
 # TODO: Replace polling with Server-Sent Events (SSE) for production
 
-app.include_router(jobs.router, prefix="/api")
+app.include_router(jobs_router)
 
 
 @app.get("/health", tags=["health"])

@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 
 SYSTEM_PROMPT = (
@@ -159,20 +160,31 @@ def analyze_transcript(
         "max_output_tokens": 4096,
     }
 
-    first_response = model.generate_content(
-        user_prompt,
-        generation_config=generation_config,
-    )
-    first_text = _extract_response_text(first_response)
+    def _call_with_rate_limit_retry(prompt: str, max_attempts: int = 4) -> str:
+        """Call Gemini, retrying up to max_attempts times on 429 ResourceExhausted."""
+        import re as _re
+        for attempt in range(1, max_attempts + 1):
+            try:
+                resp = model.generate_content(prompt, generation_config=generation_config)
+                return _extract_response_text(resp)
+            except Exception as exc:
+                exc_str = str(exc)
+                is_rate_limit = "429" in exc_str or "ResourceExhausted" in type(exc).__name__
+                if is_rate_limit and attempt < max_attempts:
+                    # Parse "retry in Xs" hint from the error message if present
+                    match = _re.search(r"retry[^\d]*(\d+(?:\.\d+)?)", exc_str, _re.IGNORECASE)
+                    wait = float(match.group(1)) + 2 if match else 30 * attempt
+                    print(f"[gemini] 429 rate limit on attempt {attempt}/{max_attempts}, waiting {wait:.0f}s...")
+                    time.sleep(wait)
+                else:
+                    raise
+
+    first_text = _call_with_rate_limit_retry(user_prompt)
     try:
         parsed = json.loads(first_text)
     except json.JSONDecodeError:
         retry_prompt = f"{user_prompt}\n\n{RETRY_SUFFIX}"
-        second_response = model.generate_content(
-            retry_prompt,
-            generation_config=generation_config,
-        )
-        second_text = _extract_response_text(second_response)
+        second_text = _call_with_rate_limit_retry(retry_prompt)
         try:
             parsed = json.loads(second_text)
         except json.JSONDecodeError as exc:

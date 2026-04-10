@@ -59,7 +59,7 @@ def extract_subtitles(job_id: str, youtube_url: str, output_dir: str) -> dict:
         "--sub-langs",
         "en",
         "--sub-format",
-        "vtt",
+        "srt/vtt",
         "--skip-download",
         "--output",
         output_template,

@@ -4,34 +4,24 @@ const api = axios.create({
   baseURL: '/api',
 })
 
-/** Submit a new YouTube URL for processing. Returns { job_id }. */
-export const createJob = async (youtubeUrl) => {
-  // TODO: implement in Step 1
+export const POLL_INTERVAL_MS = 3000
+
+export function submitJob(youtubeUrl) {
+  return api.post('/jobs', { youtube_url: youtubeUrl }).then((r) => r.data)
 }
 
-/** Poll a job by ID for status and results. */
-export const getJob = async (jobId) => {
-  // TODO: implement in Step 1
+export function getJob(jobId) {
+  return api.get(`/jobs/${jobId}`).then((r) => r.data)
 }
 
-/** List all past jobs. */
-export const listJobs = async () => {
-  // TODO: implement in Step 1
+export function listJobs() {
+  return api.get('/jobs').then((r) => r.data)
 }
 
-/** Delete a job by ID. */
-export const deleteJob = async (jobId) => {
-  // TODO: implement in Step 1
+export function deleteJob(jobId) {
+  return api.delete(`/jobs/${jobId}`).then((r) => r.data)
 }
 
-/** Fetch the raw parsed transcript for a job. */
-export const getTranscript = async (jobId) => {
-  // TODO: implement in Step 1
+export function getTranscript(jobId) {
+  return api.get(`/jobs/${jobId}/transcript`).then((r) => r.data)
 }
-
-/** Fetch the generated clip recommendations for a job. */
-export const getClips = async (jobId) => {
-  // TODO: implement in Step 1
-}
-
-export default api

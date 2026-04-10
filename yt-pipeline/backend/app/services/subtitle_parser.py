@@ -12,6 +12,10 @@ _SRT_TS_RE = re.compile(
 _TIMESTAMP_MARKER_RE = re.compile(r"\[\d{2}:\d{2}:\d{2}\]")
 _SENTENCE_END_RE = re.compile(r"[.?!][\"')\]]*$")
 
+# Guards for _merge_sentence_fragments
+_MAX_MERGE_WORDS = 60
+_MAX_MERGE_SECONDS = 12.0
+
 
 def _clean_text(text: str) -> str:
     cleaned = _TAG_RE.sub("", text)
@@ -114,14 +118,70 @@ def _parse_srt(content: str) -> list[dict]:
     return cues
 
 
-def _remove_consecutive_duplicates(cues: list[dict]) -> list[dict]:
-    if not cues:
-        return cues
-    deduped = [cues[0].copy()]
+def _deduplicate_rolling_captions(cues: list[dict]) -> list[dict]:
+    """
+    YouTube auto-generated VTT uses a rolling-window format where each cue
+    carries the previous cue's text forward as its first line(s).
+
+    Example after tag-stripping:
+      A: "Hi. Rick Sorcin Harvey Spectre. Nice"
+      B: "Hi. Rick Sorcin Harvey Spectre. Nice"        ← 10ms spacer, exact dup
+      C: "Hi. Rick Sorcin Harvey Spectre. Nice to meet you."  ← rolls A forward
+      D: "to meet you."                                ← transition
+      E: "to meet you. You should have a seat here."  ← rolls D forward
+
+    After this pass:
+      A: "Hi. Rick Sorcin Harvey Spectre. Nice"
+      C: "to meet you."
+      E: "You should have a seat here."
+    """
+    if len(cues) < 2:
+        return [c.copy() for c in cues]
+
+    result: list[dict] = [cues[0].copy()]
+
     for cue in cues[1:]:
-        if cue["text"] != deduped[-1]["text"]:
-            deduped.append(cue.copy())
-    return deduped
+        prev_text = result[-1]["text"]
+        curr_text = cue["text"]
+
+        # Exact duplicate — skip
+        if curr_text == prev_text:
+            continue
+
+        # Current text starts with previous text (roll-forward case)
+        if curr_text.startswith(prev_text):
+            new_text = curr_text[len(prev_text):].strip()
+            if new_text:
+                new_cue = cue.copy()
+                new_cue["text"] = new_text
+                result.append(new_cue)
+            # else the current cue adds nothing new — discard it
+            continue
+
+        # Word-level suffix-of-prev / prefix-of-curr overlap
+        # (handles cases where the exact-string check doesn't match due to
+        #  punctuation differences or minor whitespace variations)
+        prev_words = prev_text.split()
+        curr_words = curr_text.split()
+        max_check = min(len(prev_words), len(curr_words), 30)
+
+        overlap = 0
+        for length in range(max_check, 0, -1):
+            if prev_words[-length:] == curr_words[:length]:
+                overlap = length
+                break
+
+        if overlap > 0:
+            remaining = curr_words[overlap:]
+            if remaining:
+                new_cue = cue.copy()
+                new_cue["text"] = " ".join(remaining)
+                result.append(new_cue)
+            # else pure duplicate, discard
+        else:
+            result.append(cue.copy())
+
+    return result
 
 
 def _merge_overlapping_cues(cues: list[dict]) -> list[dict]:
@@ -146,14 +206,26 @@ def _ends_sentence(text: str) -> bool:
 
 
 def _merge_sentence_fragments(cues: list[dict]) -> list[dict]:
+    """
+    Merge consecutive cues that don't end on sentence-ending punctuation,
+    so Gemini receives full thoughts rather than mid-sentence fragments.
+
+    Guards:
+    - Never merge a cue that already exceeds _MAX_MERGE_WORDS words.
+    - Never merge if the merged result would span more than _MAX_MERGE_SECONDS.
+    """
     if not cues:
         return cues
     rebuilt = [cue.copy() for cue in cues]
     i = 0
     while i < len(rebuilt) - 1:
-        if not _ends_sentence(rebuilt[i]["text"]):
+        curr = rebuilt[i]
+        word_count = len(curr["text"].split())
+        span = curr["end_seconds"] - curr["start_seconds"]
+        too_long = word_count >= _MAX_MERGE_WORDS or span >= _MAX_MERGE_SECONDS
+        if not _ends_sentence(curr["text"]) and not too_long:
             next_cue = rebuilt.pop(i + 1)
-            rebuilt[i]["text"] = f"{rebuilt[i]['text']} {next_cue['text']}".strip()
+            rebuilt[i]["text"] = f"{curr['text']} {next_cue['text']}".strip()
             rebuilt[i]["end"] = next_cue["end"]
             rebuilt[i]["end_seconds"] = next_cue["end_seconds"]
             continue
@@ -174,12 +246,17 @@ def parse_subtitles(subtitle_file_path: str, subtitle_format: str) -> list[dict]
 
     if fmt == "vtt":
         cues = _parse_vtt(content)
+        # VTT from YouTube auto-captions has rolling windows — deduplicate before
+        # anything else to prevent downstream merging from re-combining duplicates
+        cues = _deduplicate_rolling_captions(cues)
     elif fmt == "srt":
+        # yt-dlp already de-rolls auto-captions when converting to SRT, but run
+        # the dedup pass anyway as a safety net for edge cases
         cues = _parse_srt(content)
+        cues = _deduplicate_rolling_captions(cues)
     else:
         raise ValueError(f"Unsupported subtitle format: {subtitle_format}")
 
-    cues = _remove_consecutive_duplicates(cues)
     cues = _merge_overlapping_cues(cues)
     cues = _merge_sentence_fragments(cues)
     cues = _reindex(cues)

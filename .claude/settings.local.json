@@ -7,7 +7,21 @@
       "Bash(uvicorn app.main:app --port 8000)",
       "Bash(curl -s http://localhost:8000/health)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(python db_init.py)",
+      "Bash(tasklist /FI \"IMAGENAME eq python.exe\" /FO CSV)",
+      "Bash(curl:*)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('status:', d['status']\\)\")",
+      "Bash(taskkill /F /IM python.exe /T)",
+      "Bash(python verify_step5.py)",
+      "Bash(wmic process:*)",
+      "Bash(powershell:*)",
+      "Bash(netstat -ano)",
+      "Bash(celery -A celery_app control shutdown)",
+      "Bash(docker exec yt-pipeline-redis-1:*)",
+      "Bash(xargs cat:*)",
+      "Bash(ls:*)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('status:', d['status'], '| error:', d.get\\('error'\\)\\)\")"
     ]
   }
 }

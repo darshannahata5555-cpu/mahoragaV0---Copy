@@ -17,4 +17,5 @@ celery_app.conf.task_serializer = "json"
 celery_app.conf.result_serializer = "json"
 celery_app.conf.accept_content = ["json"]
 
-# Tasks are registered in app/workers/pipeline_worker.py
+# Import task modules so Celery registers them on worker startup
+import app.workers.pipeline_worker  # noqa: E402, F401
